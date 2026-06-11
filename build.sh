@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Render build script — runs during deployment
 set -o errexit
+
+echo "Python version:"
+python --version
 
 pip install --upgrade pip
 pip install -r requirements.txt
