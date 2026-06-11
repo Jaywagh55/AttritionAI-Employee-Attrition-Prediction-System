@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Attrition Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- ─── Header ───────────────────────────────────────────────────────────── -->
+<header>
+    <div class="header-inner">
+        <h1>🏢 Employee Attrition Predictor</h1>
+    </div>
+</header>
+
+<!-- ─── Navigation tabs ──────────────────────────────────────────────────── -->
+<nav class="tabs">
+    <button class="tab active" onclick="showSection('form')">Prediction Form</button>
+    <button class="tab"        onclick="showSection('eda')">EDA Charts</button>
+    <button class="tab"        onclick="showSection('eval')">Model Evaluation</button>
+</nav>
+
+<!-- ─── Prediction Form ──────────────────────────────────────────────────── -->
+<main id="section-form" class="section active">
+    <form action="/predict" method="POST" class="prediction-form">
+
+        <!-- Personal Information -->
+        <fieldset>
+            <legend>👤 Personal Information</legend>
+            <div class="grid-2">
+                <div class="field">
+                    <label for="Age">Age</label>
+                    <input type="number" id="Age" name="Age" value="36" min="18" max="65" required>
+                </div>
+                <div class="field">
+                    <label for="Gender">Gender</label>
+                    <select id="Gender" name="Gender" required>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="MaritalStatus">Marital Status</label>
+                    <select id="MaritalStatus" name="MaritalStatus" required>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Divorced">Divorced</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="DistanceFromHome">Distance from Home (miles)</label>
+                    <input type="number" id="DistanceFromHome" name="DistanceFromHome" value="7" min="0" max="30" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Education -->
+        <fieldset>
+            <legend>🎓 Education</legend>
+            <div class="grid-2">
+                <div class="field">
+                    <label for="Education">Education Level</label>
+                    <select id="Education" name="Education" required>
+                        <option value="1">Below College</option>
+                        <option value="2">College</option>
+                        <option value="3" selected>Bachelor</option>
+                        <option value="4">Master</option>
+                        <option value="5">Doctor</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="EducationField">Education Field</label>
+                    <select id="EducationField" name="EducationField" required>
+                        <option value="Life Sciences">Life Sciences</option>
+                        <option value="Medical">Medical</option>
+                        <option value="Other">Other</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Technical Degree">Technical Degree</option>
+                        <option value="Human Resources">Human Resources</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Job Details -->
+        <fieldset>
+            <legend>💼 Job Details</legend>
+            <div class="grid-2">
+                <div class="field">
+                    <label for="Department">Department</label>
+                    <select id="Department" name="Department" required>
+                        <option value="Sales">Sales</option>
+                        <option value="Research & Development" selected>Research & Development</option>
+                        <option value="Human Resources">Human Resources</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="JobRole">Job Role</label>
+                    <select id="JobRole" name="JobRole" required>
+                        <option value="Sales Executive">Sales Executive</option>
+                        <option value="Research Scientist" selected>Research Scientist</option>
+                        <option value="Laboratory Technician">Laboratory Technician</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Healthcare Representative">Healthcare Representative</option>
+                        <option value="Sales Representative">Sales Representative</option>
+                        <option value="Research Director">Research Director</option>
+                        <option value="Manufacturing Director">Manufacturing Director</option>
+                        <option value="Human Resources">Human Resources</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="JobLevel">Job Level (1–5)</label>
+                    <input type="number" id="JobLevel" name="JobLevel" value="2" min="1" max="5" required>
+                </div>
+                <div class="field">
+                    <label for="BusinessTravel">Business Travel</label>
+                    <select id="BusinessTravel" name="BusinessTravel" required>
+                        <option value="Travel_Rarely">Travel Rarely</option>
+                        <option value="Travel_Frequently">Travel Frequently</option>
+                        <option value="Non-Travel">No Travel</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="OverTime">Overtime</label>
+                    <select id="OverTime" name="OverTime" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Compensation -->
+        <fieldset>
+            <legend>💰 Compensation</legend>
+            <div class="grid-2">
+                <div class="field">
+                    <label for="MonthlyIncome">Monthly Income ($)</label>
+                    <input type="number" id="MonthlyIncome" name="MonthlyIncome" value="6500" min="1000" max="20000" step="100" required>
+                </div>
+                <div class="field">
+                    <label for="DailyRate">Daily Rate ($)</label>
+                    <input type="number" id="DailyRate" name="DailyRate" value="800" min="100" max="1500" step="10" required>
+                </div>
+                <div class="field">
+                    <label for="HourlyRate">Hourly Rate ($)</label>
+                    <input type="number" id="HourlyRate" name="HourlyRate" value="65" min="30" max="100" required>
+                </div>
+                <div class="field">
+                    <label for="MonthlyRate">Monthly Rate ($)</label>
+                    <input type="number" id="MonthlyRate" name="MonthlyRate" value="14000" min="2000" max="27000" step="100" required>
+                </div>
+                <div class="field">
+                    <label for="PercentSalaryHike">Percent Salary Hike</label>
+                    <input type="number" id="PercentSalaryHike" name="PercentSalaryHike" value="14" min="0" max="25" required>
+                </div>
+                <div class="field">
+                    <label for="StockOptionLevel">Stock Option Level (0–3)</label>
+                    <input type="number" id="StockOptionLevel" name="StockOptionLevel" value="1" min="0" max="3" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Satisfaction & Performance -->
+        <fieldset>
+            <legend>😊 Satisfaction & Performance</legend>
+            <div class="grid-2">
+                <div class="field">
+                    <label for="JobSatisfaction">Job Satisfaction (1–4)</label>
+                    <input type="number" id="JobSatisfaction" name="JobSatisfaction" value="3" min="1" max="4" required>
+                </div>
+                <div class="field">
+                    <label for="EnvironmentSatisfaction">Environment Satisfaction (1–4)</label>
+                    <input type="number" id="EnvironmentSatisfaction" name="EnvironmentSatisfaction" value="3" min="1" max="4" required>
+                </div>
+                <div class="field">
+                    <label for="RelationshipSatisfaction">Relationship Satisfaction (1–4)</label>
+                    <input type="number" id="RelationshipSatisfaction" name="RelationshipSatisfaction" value="3" min="1" max="4" required>
+                </div>
+                <div class="field">
+                    <label for="WorkLifeBalance">Work-Life Balance (1–4)</label>
+                    <input type="number" id="WorkLifeBalance" name="WorkLifeBalance" value="3" min="1" max="4" required>
+                </div>
+                <div class="field">
+                    <label for="JobInvolvement">Job Involvement (1–4)</label>
+                    <input type="number" id="JobInvolvement" name="JobInvolvement" value="3" min="1" max="4" required>
+                </div>
+                <div class="field">
+                    <label for="PerformanceRating">Performance Rating (1–5)</label>
+                    <input type="number" id="PerformanceRating" name="PerformanceRating" value="3" min="1" max="5" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Experience & Tenure -->
+        <fieldset>
+            <legend>📅 Experience & Tenure</legend>
+            <div class="grid-2">
+                <div class="field">
+                    <label for="TotalWorkingYears">Total Working Years</label>
+                    <input type="number" id="TotalWorkingYears" name="TotalWorkingYears" value="10" min="0" max="40" required>
+                </div>
+                <div class="field">
+                    <label for="YearsAtCompany">Years at Company</label>
+                    <input type="number" id="YearsAtCompany" name="YearsAtCompany" value="7" min="0" max="40" required>
+                </div>
+                <div class="field">
+                    <label for="YearsInCurrentRole">Years in Current Role</label>
+                    <input type="number" id="YearsInCurrentRole" name="YearsInCurrentRole" value="5" min="0" max="18" required>
+                </div>
+                <div class="field">
+                    <label for="YearsSinceLastPromotion">Years Since Last Promotion</label>
+                    <input type="number" id="YearsSinceLastPromotion" name="YearsSinceLastPromotion" value="2" min="0" max="15" required>
+                </div>
+                <div class="field">
+                    <label for="YearsWithCurrManager">Years with Current Manager</label>
+                    <input type="number" id="YearsWithCurrManager" name="YearsWithCurrManager" value="5" min="0" max="17" required>
+                </div>
+                <div class="field">
+                    <label for="NumCompaniesWorked">Companies Worked At</label>
+                    <input type="number" id="NumCompaniesWorked" name="NumCompaniesWorked" value="2" min="0" max="10" required>
+                </div>
+                <div class="field">
+                    <label for="TrainingTimesLastYear">Trainings Last Year</label>
+                    <input type="number" id="TrainingTimesLastYear" name="TrainingTimesLastYear" value="2" min="0" max="6" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <button type="submit" class="btn-predict">🔮 Predict Attrition</button>
+    </form>
+</main>
+
+<!-- ─── EDA Charts ───────────────────────────────────────────────────────── -->
+<main id="section-eda" class="section">
+    <h2>Exploratory Data Analysis</h2>
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h3>Attrition Distribution</h3>
+            <img src="{{ url_for('static', filename='plots/attrition_distribution.png') }}" alt="Attrition Distribution">
+        </div>
+        <div class="chart-card">
+            <h3>Attrition by Department</h3>
+            <img src="{{ url_for('static', filename='plots/attrition_by_department.png') }}" alt="By Department">
+        </div>
+        <div class="chart-card">
+            <h3>Age Distribution by Attrition</h3>
+            <img src="{{ url_for('static', filename='plots/age_by_attrition.png') }}" alt="Age Distribution">
+        </div>
+        <div class="chart-card">
+            <h3>Monthly Income by Attrition</h3>
+            <img src="{{ url_for('static', filename='plots/income_by_attrition.png') }}" alt="Income Distribution">
+        </div>
+        <div class="chart-card wide">
+            <h3>Feature Correlation Heatmap</h3>
+            <img src="{{ url_for('static', filename='plots/correlation_heatmap.png') }}" alt="Correlation">
+        </div>
+    </div>
+</main>
+
+<!-- ─── Model Evaluation ─────────────────────────────────────────────────── -->
+<main id="section-eval" class="section">
+    <h2>Model Evaluation</h2>
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h3>Confusion Matrix</h3>
+            <img src="{{ url_for('static', filename='plots/confusion_matrix.png') }}" alt="Confusion Matrix">
+        </div>
+        <div class="chart-card">
+            <h3>ROC Curve Comparison</h3>
+            <img src="{{ url_for('static', filename='plots/roc_curve.png') }}" alt="ROC Curve">
+        </div>
+        <div class="chart-card wide">
+            <h3>Top Feature Importances</h3>
+            <img src="{{ url_for('static', filename='plots/feature_importance.png') }}" alt="Feature Importance">
+        </div>
+    </div>
+</main>
+
+<!-- ─── Footer ───────────────────────────────────────────────────────────── -->
+<footer>
+    <p>Employee Attrition Prediction &copy; 2026 &mdash; Built with Flask & scikit-learn</p>
+</footer>
+
+<script>
+function showSection(name) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('section-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+}
+</script>
+
+</body>
+</html>

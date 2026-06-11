@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result — Employee Attrition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <h1>🏢 Employee Attrition Predictor</h1>
+        <p class="subtitle">Powered by <strong>{{ model_name }}</strong></p>
+    </div>
+</header>
+
+<main class="result-page">
+
+    <!-- Prediction Card -->
+    <div class="result-card" style="border-left: 6px solid {{ risk_color }};">
+
+        <h2>Prediction Result</h2>
+
+        <!-- Attrition Verdict -->
+        <div class="verdict">
+            <span class="verdict-icon">
+                {% if risk_pct >= 50 %}⚠️{% elif risk_pct >= 20 %}⚡{% else %}✅{% endif %}
+            </span>
+            <span class="verdict-text" style="color: {{ risk_color }};">{{ label }}</span>
+        </div>
+
+        <!-- Risk Gauge -->
+        <div class="gauge-wrapper">
+            <div class="gauge-bg">
+                <div class="gauge-fill" style="width: {{ risk_pct }}%; background: {{ risk_color }};"></div>
+            </div>
+            <span class="gauge-label">{{ risk_pct }}% attrition probability</span>
+        </div>
+
+        <!-- Risk Badge -->
+        <div class="badge" style="background: {{ risk_color }};">
+            Risk Level: <strong>{{ risk_level }}</strong>
+        </div>
+
+        <!-- Actions -->
+        <div class="result-actions">
+            <a href="/" class="btn-back">← Make Another Prediction</a>
+        </div>
+    </div>
+
+    <!-- Recommendation Card -->
+    <div class="rec-card">
+        <h3>💡 Retention Recommendations</h3>
+        <ul>
+            {% if risk_pct >= 50 %}
+                <li><strong>High risk of attrition.</strong> Consider an immediate retention conversation with the employee.</li>
+                <li>Review compensation package — employees with below-market pay are more likely to leave.</li>
+                <li>Assess overtime load — frequent overtime is strongly correlated with attrition.</li>
+                <li>Explore career growth opportunities — long tenure in the same role without promotion increases risk.</li>
+            {% elif risk_pct >= 20 %}
+                <li><strong>Moderate attrition risk.</strong> Schedule a one-on-one check-in to discuss job satisfaction.</li>
+                <li>Consider offering additional training or development opportunities.</li>
+                <li>Review work-life balance — ensure workload is sustainable.</li>
+            {% else %}
+                <li><strong>Low attrition risk.</strong> This employee appears engaged and likely to stay.</li>
+                <li>Continue current engagement strategies and recognize contributions regularly.</li>
+                <li>Monitor changes in satisfaction metrics over time.</li>
+            {% endif %}
+        </ul>
+    </div>
+
+</main>
+
+<footer>
+    <p>Employee Attrition Prediction &copy; 2026 &mdash; Built with Flask & scikit-learn</p>
+</footer>
+
+</body>
+</html>
